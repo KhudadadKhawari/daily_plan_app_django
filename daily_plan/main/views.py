@@ -3,8 +3,11 @@ from .models import Plan
 from django.contrib.auth.models import User
 from .forms import  PlanForm, UserCreateForm
 from django.contrib import messages
+from django.contrib.auth import logout, login, authenticate
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 
+@login_required
 def home(request):
     today_plans = Plan.objects.all()
     print(today_plans)
@@ -34,9 +37,25 @@ def user_register(request):
 
 
 def user_login(request):
-    return render(request, 'main/user_login.html')
+    if request.method == 'POST':
+        username = request.POST.get('username').lower()
+        password = request.POST.get('password')
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+                    login(request, user)
+                    return redirect('home')
+        else:
+            messages.info(request, "Username or Password is Incorrect", 'alert-danger')
+            return redirect('user_login')
+    return render(request, "main/user_login.html")
 
 
+def user_logout(request):
+    logout(request)
+    return redirect('user_login')
+
+
+@login_required
 def user_profile(request):
     context={
         'active_nav': 'profile',
@@ -44,6 +63,7 @@ def user_profile(request):
     return render(request, 'main/user_profile.html', context)
 
 
+@login_required
 def archive(request):
     context={
         'active_nav': 'archive',
