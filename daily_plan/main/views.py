@@ -1,6 +1,7 @@
 import imp
 from django.db import IntegrityError
 from django.shortcuts import render, redirect
+from django.template import context
 from .models import Plan
 from django.contrib.auth.models import User
 from .forms import  PlanForm, UserCreateForm, UserProfileForm
@@ -10,6 +11,7 @@ from django.contrib.auth.decorators import login_required
 from .decorators import unauthenticated_user
 from datetime import date
 from django.db.models import Q
+from django.contrib.auth.forms import PasswordChangeForm
 # Create your views here.
 
 @login_required
@@ -70,6 +72,22 @@ def user_logout(request):
     logout(request)
     return redirect('user_login')
 
+
+@login_required
+def change_password(request):
+    user = request.user
+    form = PasswordChangeForm(user)
+    if request.method == 'POST':
+        form = PasswordChangeForm(user, request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Password Changed Successfully", "alert-success")
+            return redirect('change_password')
+    context={
+        'form':form,
+        'active_nav':'change_password',
+    }
+    return render(request, 'main/change_password.html', context)
 
 @login_required
 def user_profile(request):
