@@ -15,7 +15,13 @@ from datetime import date
 def home(request):
     user = request.user
     today = date.today()
-    today_plans = Plan.objects.filter(user=user, date_created=today)
+    today_plans = Plan.objects.filter(user=user, date_created=today).order_by('-id')
+    if request.method =='POST':
+        new_plan = request.POST.get('new_plan')
+        Plan.objects.create(
+            description=new_plan,
+            user=user
+        )
     context={
         'active_nav': 'home',
         'today_plans':today_plans
@@ -120,5 +126,5 @@ def delete_plan(request, id):
     plan = Plan.objects.get(id=id, user=user)
     if request.method == "POST":
         plan.delete()
-        messages.info(request, "Plane Deleted", 'alert-info')
+        messages.info(request, "Plan Deleted", 'alert-info')
     return redirect('home')

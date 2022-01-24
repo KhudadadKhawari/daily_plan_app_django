@@ -15,10 +15,13 @@
         </div>
         <div class="card-body">
             <div>
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="New Plan..." aria-describedby="basic-addon2">
-                    <a href="#" class="btn btn-primary" >Add Plan</a>
-                  </div>
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="input-group">
+                        <input type="text" name="new_plan" class="form-control" placeholder="New Plan..." aria-describedby="basic-addon2">
+                        <input type="submit" name="submit" class="btn btn-primary" value="Add Plan">
+                    </div>
+                </form>
             </div>
             <hr>
             <!-- Today's Plans -->
