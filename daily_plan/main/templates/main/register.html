@@ -4,7 +4,21 @@
 
 {% block content %}
 <div class="container">
-    
+    {% if form.errors %}
+    {% for field in form %}
+        {% for error in field.errors %}
+            <div class="alert alert-danger">
+                {{ field.name }}
+                <strong>{{ error|escape }}</strong>
+            </div>
+        {% endfor %}
+    {% endfor %}
+    {% for error in form.non_field_errors %}
+        <div class="alert alert-danger">
+            <strong>{{ error|escape }}</strong>
+        </div>
+    {% endfor %}
+    {% endif %}
     <div class="card o-hidden border-0 shadow-lg my-5">
         <div class="card-body p-0">
             <!-- Nested Row within Card Body -->
@@ -16,36 +30,48 @@
                             <h1 class="h4 text-gray-900 mb-4">Create an Account!</h1>
                         </div>
                         <form method="post" class="user">
+                            {% csrf_token %}
                             <div class="form-group">
-                                <input type="text" name="username" class="form-control form-control-user" placeholder="Username" maxlength="150" autofocus required id="id_username">
+                                {{form.username}}
                             </div>
                             <div class="form-group row">
                                 <div class="col-sm-6 mb-3 mb-sm-0">
-                                    <input type="text" name="first_name" class="form-control form-control-user" placeholder="First Name" maxlength="150" id="id_first_name">
+                                    {{form.first_name}}
                                 </div>
                                 <div class="col-sm-6">
-                                    <input type="text" name="last_name" class="form-control form-control-user" placeholder="Last Name" maxlength="150" id="id_last_name">
+                                    {{form.last_name}}
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-6 mb-3 mb-sm-0">
+                                    {{form.clg_reg_no}}
+                                </div>
+                                <div class="col-sm-6">
+                                    {{form.graduation_year}}
                                 </div>
                             </div>
                             <div class="form-group">
-                                <input type="email" name="email" class="form-control form-control-user" placeholder="Email" maxlength="254" id="id_email">
+                                {{form.email}}
+                            </div>
+                            <div class="form-group">
+                                {{form.phone}}
                             </div>
 
                             <div class="form-group row">
                                 <div class="col-sm-6 mb-3 mb-sm-0">
-                                    <input type="password" name="password1" class="form-control form-control-user" placeholder="Password" onkeyup="check();" required id="id_password1">
+                                    {{form.password1}}
                                 </div>
                                 <div class="col-sm-6">
-                                    <input type="password" name="password2" class="form-control form-control-user" placeholder="Confirm Password" onkeyup="check();" required id="id_password2">
+                                    {{form.password2}}
                                     <span class="" id='message'></span>
                                 </div>
                             </div>
 
-                            <input type="submit" name="register" href="#" class="btn btn-primary btn-user btn-block" onClick="toLowerCase();" value="Register">
+                            <input type="submit" name="register" href="#" class="btn btn-primary btn-user btn-block" value="Register">
                         </form>
                         <hr>
                         <div class="text-center">
-                            <a  href="{% url 'user_login' %}">Already have an account? Login!</a>
+                            <a class="small" href="{% url 'user_login' %}">Already have an account? Login!</a>
                         </div>
                     </div>
                 </div>

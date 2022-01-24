@@ -24,10 +24,11 @@
             <!-- Today's Plans -->
             <div>
                 <ul class="list-group">
+                    {% for plan in today_plans %}
                     <li class="list-group-item">
                         <button type="button" class="btn " data-toggle="modal" data-target="#delete" ><i class="fas fa-trash-alt"></i></button>
                         <span>
-                            Here is th descriptions of the plane pere is th descriptions of the plane
+                            {{plan.description}}
                         </span>
                         <button type="button" class="btn float-right" data-toggle="modal" data-target="#complete" ><i class="fas fa-check-circle"></i></button>
                         <button type="button" class="btn float-right" data-toggle="modal" data-target="#edit" ><i class="fas fa-edit"></i></i></button>
@@ -103,15 +104,7 @@
                         </div>
                     </li>
                     <br>
-                    <li class="list-group-item">
-                        <a href="#" class="btn "><i class="fas fa-trash-alt"></i></a>
-                        <span>
-                            Here is th descriptions of the plane pere is th descriptions of the plane
-                        </span>
-                        <a href="#" class="btn float-right"><i class="fas fa-check-circle"></i></a>
-                        <a href="#" class="btn float-right"><i class="fas fa-edit"></i></a>
-                    </li>
-                    
+                    {% endfor %}
                   </ul>
             </div>
         </div>
