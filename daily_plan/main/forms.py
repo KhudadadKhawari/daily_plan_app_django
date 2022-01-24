@@ -1,16 +1,8 @@
 from django import forms
-from django.forms import ModelForm
-from .models import Plan
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.core.exceptions import ValidationError
-from django.contrib.auth.forms import PasswordChangeForm
 
-
-class PlanForm(ModelForm):
-    class Meta:
-        model = Plan
-        fields = '__all__'
 
 
 class UserCreateForm(UserCreationForm):
@@ -22,8 +14,6 @@ class UserCreateForm(UserCreationForm):
             'first_name': forms.TextInput(attrs={'class':'form-control form-control-user', 'placeholder':'First Name',}),
             'last_name': forms.TextInput(attrs={'class':'form-control form-control-user', 'placeholder':'Last Name',}),
             'email': forms.EmailInput(attrs={'class':'form-control form-control-user', 'placeholder':'Email',}),
-            # 'password1': forms.PasswordInput(attrs={'class':'form-control form-control-user', 'placeholder':'Password', 'name':'password', 'id':'password'}),
-            # 'password2': forms.PasswordInput(attrs={'class':'form-control form-control-user', 'placeholder':'Confirm_password', 'name':'Confirm_password', 'id':'Confirm_password'}),
         }
 
     def __init__(self, *args, **kwargs):

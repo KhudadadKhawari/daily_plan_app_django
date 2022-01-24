@@ -1,10 +1,7 @@
-import imp
 from django.db import IntegrityError
 from django.shortcuts import render, redirect
-from django.template import context
 from .models import Plan
-from django.contrib.auth.models import User
-from .forms import  PlanForm, UserCreateForm, UserProfileForm
+from .forms import   UserCreateForm, UserProfileForm
 from django.contrib import messages
 from django.contrib.auth import logout, login, authenticate
 from django.contrib.auth.decorators import login_required
@@ -112,8 +109,7 @@ def user_profile(request):
 def archive(request):
     user = request.user
     today = date.today()
-    plans = Plan.objects.filter( user=user)
-    # ~Q(date_created=today)
+    plans = Plan.objects.filter(~Q(date_created=today), user=user)
     context={
         'active_nav': 'archive',
         'plans': plans,
