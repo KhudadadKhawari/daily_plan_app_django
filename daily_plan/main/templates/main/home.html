@@ -1,10 +1,121 @@
 {% extends 'main/base.html' %}
+{% load static %}
 {% block head %}
+
 <title>Home page</title>
+
 {% endblock head %}
 
+<!-- #############333 -->
 {% block content %}
-<h1>some text</h1>
+<div class="container">
+    <div class="card mt-3">
+        <div class="card-header">
+          Today's Plans
+        </div>
+        <div class="card-body">
+            <div>
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="New Plan..." aria-describedby="basic-addon2">
+                    <a href="#" class="btn btn-primary" >Add Plan</a>
+                  </div>
+            </div>
+            <hr>
+            <!-- Today's Plans -->
+            <div>
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <button type="button" class="btn " data-toggle="modal" data-target="#delete" ><i class="fas fa-trash-alt"></i></button>
+                        <span>
+                            Here is th descriptions of the plane pere is th descriptions of the plane
+                        </span>
+                        <button type="button" class="btn float-right" data-toggle="modal" data-target="#complete" ><i class="fas fa-check-circle"></i></button>
+                        <button type="button" class="btn float-right" data-toggle="modal" data-target="#edit" ><i class="fas fa-edit"></i></i></button>
 
+                        <!-- delete model -->
+                        <div class="modal fade" id="delete" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Delete Plan</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    Are You sure You want to Delete this plan?
+                                </div>
+                                <div class="modal-footer">
+                                    <form action="#" method="POST">
+                                        {% csrf_token %}
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                        <input class="btn btn-danger" type="submit" name="Confirm" value="Delete">
+                                    </form>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- edit Modal -->
+                        <div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Delete Plan</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    Udpate Plane Form
+                                </div>
+                                <div class="modal-footer">
+                                    <form action="#" method="POST">
+                                        {% csrf_token %}
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                        <input class="btn btn-primary" type="submit" name="Confirm" value="Update">
+                                    </form>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Comlplete Plan model -->
+                        <div class="modal fade" id="complete" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Delete Plan</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    Are you Sure you want to Mark this Column as Comlpleted?
+                                </div>
+                                <div class="modal-footer">
+                                    <form action="#" method="POST">
+                                        {% csrf_token %}
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                        <input class="btn btn-success" type="submit" name="Confirm" value="Yes">
+                                    </form>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <br>
+                    <li class="list-group-item">
+                        <a href="#" class="btn "><i class="fas fa-trash-alt"></i></a>
+                        <span>
+                            Here is th descriptions of the plane pere is th descriptions of the plane
+                        </span>
+                        <a href="#" class="btn float-right"><i class="fas fa-check-circle"></i></a>
+                        <a href="#" class="btn float-right"><i class="fas fa-edit"></i></a>
+                    </li>
+                    
+                  </ul>
+            </div>
+        </div>
+      </div>
+</div>
 {% endblock content %}
 

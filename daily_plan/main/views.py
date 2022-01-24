@@ -5,8 +5,7 @@ from django.template import context
 
 def home(request):
     context={
-        'number':234523452345,
-        'text': 'Mr merwais',
+        'active_nav': 'home',
     }
     return render(request, "main/home.html", context)
 
@@ -17,3 +16,17 @@ def user_register(request):
 
 def user_login(request):
     return render(request, 'main/user_login.html')
+
+
+def user_profile(request):
+    context={
+        'active_nav': 'profile',
+    }
+    return render(request, 'main/user_profile.html', context)
+
+
+def archive(request):
+    context={
+        'active_nav': 'archive',
+    }
+    return render(request, 'main/archive.html', context)

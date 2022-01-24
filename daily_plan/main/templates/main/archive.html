@@ -1,0 +1,131 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block head %}
+
+<title>Home page</title>
+
+{% endblock head %}
+
+<!-- #############333 -->
+{% block content %}
+<div class="container">
+    <div class="card mt-3">
+        <div class="card-header">
+          Today's Plans
+        </div>
+        <div class="card-body">
+            <!-- Today's Plans -->
+            <div>
+                <h6 class="text-center">01/04/2019</h6>
+                <ul class="list-group mb-3">
+                    <li class="list-group-item">
+                        <span>
+                            Here is th descriptions of the plane pere is th descriptions of the plane
+                        </span>
+                        <button type="button" class="btn float-right" data-toggle="modal" data-target="#delete" ><i class="fas fa-trash-alt"></i></button>
+                        <!-- delete model -->
+                        <div class="modal fade" id="delete" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Delete Plan</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    Are You sure You want to Delete this plan?
+                                </div>
+                                <div class="modal-footer">
+                                    <form action="#" method="POST">
+                                        {% csrf_token %}
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                        <input class="btn btn-danger" type="submit" name="Confirm" value="Delete">
+                                    </form>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <span>
+                            Here is th descriptions of the plane pere is th descriptions of the plane
+                        </span>
+                        <a href="#" class="btn float-right"><i class="fas fa-trash-alt"></i></a>
+                    </li>
+                    <li class="list-group-item">
+                        <span>
+                            Here is th descriptions of the plane pere is th descriptions of the plane
+                        </span>
+                        <a href="#" class="btn float-right"><i class="fas fa-trash-alt"></i></a>
+                    </li>
+                    <li class="list-group-item">
+                        <span>
+                            Here is th descriptions of the plane pere is th descriptions of the plane
+                        </span>
+                        <a href="#" class="btn float-right"><i class="fas fa-trash-alt"></i></a>
+                    </li>
+                    <br>
+                </ul>
+                <h6 class="text-center">01/04/2019</h6>
+                <ul class="list-group mb-3">
+                    <li class="list-group-item">
+                        <span>
+                            Here is th descriptions of the plane pere is th descriptions of the plane
+                        </span>
+                        <a href="#" class="btn float-right"><i class="fas fa-trash-alt"></i></a>
+                    </li>
+                    <li class="list-group-item">
+                        <span>
+                            Here is th descriptions of the plane pere is th descriptions of the plane
+                        </span>
+                        <a href="#" class="btn float-right"><i class="fas fa-trash-alt"></i></a>
+                    </li>
+                    <li class="list-group-item">
+                        <span>
+                            Here is th descriptions of the plane pere is th descriptions of the plane
+                        </span>
+                        <a href="#" class="btn float-right"><i class="fas fa-trash-alt"></i></a>
+                    </li>
+                    <li class="list-group-item">
+                        <span>
+                            Here is th descriptions of the plane pere is th descriptions of the plane
+                        </span>
+                        <a href="#" class="btn float-right"><i class="fas fa-trash-alt"></i></a>
+                    </li>
+                    <br>
+                </ul>
+                <h6 class="text-center">01/04/2019</h6>
+                <ul class="list-group mb-3">
+                    <li class="list-group-item">
+                        <span>
+                            Here is th descriptions of the plane pere is th descriptions of the plane
+                        </span>
+                        <a href="#" class="btn float-right"><i class="fas fa-trash-alt"></i></a>
+                    </li>
+                    <li class="list-group-item">
+                        <span>
+                            Here is th descriptions of the plane pere is th descriptions of the plane
+                        </span>
+                        <a href="#" class="btn float-right"><i class="fas fa-trash-alt"></i></a>
+                    </li>
+                    <li class="list-group-item">
+                        <span>
+                            Here is th descriptions of the plane pere is th descriptions of the plane
+                        </span>
+                        <a href="#" class="btn float-right"><i class="fas fa-trash-alt"></i></a>
+                    </li>
+                    <li class="list-group-item">
+                        <span>
+                            Here is th descriptions of the plane pere is th descriptions of the plane
+                        </span>
+                        <a href="#" class="btn float-right"><i class="fas fa-trash-alt"></i></a>
+                    </li>
+                    <br>
+                </ul>
+            </div>
+        </div>
+      </div>
+</div>
+{% endblock content %}
+
