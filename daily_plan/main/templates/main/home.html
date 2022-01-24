@@ -25,16 +25,16 @@
             <div>
                 <ul class="list-group">
                     {% for plan in today_plans %}
-                    <li class="list-group-item">
-                        <button type="button" class="btn " data-toggle="modal" data-target="#delete" ><i class="fas fa-trash-alt"></i></button>
+                    <li class="list-group-item ">
+                        <button type="button" class="btn " data-toggle="modal" data-target="#delete-{{plan.id}}" ><i class="fas fa-trash-alt"></i></button>
                         <span>
                             {{plan.description}}
                         </span>
-                        <button type="button" class="btn float-right" data-toggle="modal" data-target="#complete" ><i class="fas fa-check-circle"></i></button>
-                        <button type="button" class="btn float-right" data-toggle="modal" data-target="#edit" ><i class="fas fa-edit"></i></i></button>
+                        <button type="button" class="btn float-right" data-toggle="modal" data-target="#complete-{{plan.id}}" > {% if plan.status == 1 %}<i class="fas fa-check-circle"></i>{%else%} <i class="far fa-check-circle"></i>{% endif %} </button>
+                        <button type="button" class="btn float-right" data-toggle="modal" data-target="#edit-{{plan.id}}" ><i class="fas fa-edit"></i></i></button>
 
                         <!-- delete model -->
-                        <div class="modal fade" id="delete" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal fade" id="delete-{{plan.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog" role="document">
                                 <div class="modal-content">
                                 <div class="modal-header">
@@ -47,7 +47,7 @@
                                     Are You sure You want to Delete this plan?
                                 </div>
                                 <div class="modal-footer">
-                                    <form action="#" method="POST">
+                                    <form action="{% url 'delete_plan' plan.id %}" method="POST">
                                         {% csrf_token %}
                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                                         <input class="btn btn-danger" type="submit" name="Confirm" value="Delete">
@@ -57,34 +57,36 @@
                             </div>
                         </div>
                         <!-- edit Modal -->
-                        <div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal fade" id="edit-{{plan.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog" role="document">
                                 <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">Delete Plan</h5>
+                                    <h5 class="modal-title" id="exampleModalLabel">Edit Plan</h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
-                                <div class="modal-body">
-                                    Udpate Plane Form
-                                </div>
-                                <div class="modal-footer">
-                                    <form action="#" method="POST">
-                                        {% csrf_token %}
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                                        <input class="btn btn-primary" type="submit" name="Confirm" value="Update">
-                                    </form>
-                                </div>
+                                <form action="{% url 'update_plan' plan.id %}" method="POST">
+                                    {% csrf_token %}
+                                    <div class="modal-body">
+                                        <input class="form-control input-lg" type="text" name='update_plan' value="{{plan.description}}">
+                                    </div>
+                                    <div class="modal-footer">
+                                            
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                            <input class="btn btn-primary" type="submit" name="Confirm" value="Update">
+                                        
+                                    </div>
+                                </form>
                                 </div>
                             </div>
                         </div>
                         <!-- Comlplete Plan model -->
-                        <div class="modal fade" id="complete" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal fade" id="complete-{{plan.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog" role="document">
                                 <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">Delete Plan</h5>
+                                    <h5 class="modal-title" id="exampleModalLabel">Complete Plan</h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                     </button>
@@ -93,7 +95,7 @@
                                     Are you Sure you want to Mark this Column as Comlpleted?
                                 </div>
                                 <div class="modal-footer">
-                                    <form action="#" method="POST">
+                                    <form action="{% url 'complete_plan' plan.id %}" method="POST">
                                         {% csrf_token %}
                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                                         <input class="btn btn-success" type="submit" name="Confirm" value="Yes">

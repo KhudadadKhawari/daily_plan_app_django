@@ -1,3 +1,4 @@
+import imp
 from django.db import IntegrityError
 from django.shortcuts import render, redirect
 from .models import Plan
@@ -6,12 +7,15 @@ from .forms import  PlanForm, UserCreateForm
 from django.contrib import messages
 from django.contrib.auth import logout, login, authenticate
 from django.contrib.auth.decorators import login_required
+from .decorators import unauthenticated_user
+from datetime import date
 # Create your views here.
 
 @login_required
 def home(request):
-    today_plans = Plan.objects.all()
-    print(today_plans)
+    user = request.user
+    today = date.today()
+    today_plans = Plan.objects.filter(user=user, date_created=today)
     context={
         'active_nav': 'home',
         'today_plans':today_plans
@@ -19,6 +23,7 @@ def home(request):
     return render(request, "main/home.html", context)
 
 
+@unauthenticated_user
 def user_register(request):
     form = UserCreateForm()
     if request.method == 'POST':
@@ -39,7 +44,7 @@ def user_register(request):
     }
     return render(request, "main/register.html", context)
 
-
+@unauthenticated_user
 def user_login(request):
     if request.method == 'POST':
         username = request.POST.get('username').lower()
@@ -73,3 +78,47 @@ def archive(request):
         'active_nav': 'archive',
     }
     return render(request, 'main/archive.html', context)
+
+
+@login_required
+def complete_plan(request, id):
+    user = request.user
+    plan = Plan.objects.get(id=id, user=user)
+    if request.method == "POST":
+        plan.status = 1
+        plan.save()
+    return redirect('home')
+
+
+@login_required
+def update_plan(request, id):
+    user = request.user
+    plan = Plan.objects.get(id=id, user=user)
+    if request.method == "POST":
+        new_description = request.POST.get('update_plan')
+        plan.description = new_description
+        plan.save()
+        messages.info(request, "Plane Descriptions Updated Successfully", 'alert-success')
+    return redirect('home')
+
+
+@login_required
+def update_plan(request, id):
+    user = request.user
+    plan = Plan.objects.get(id=id, user=user)
+    if request.method == "POST":
+        new_description = request.POST.get('update_plan')
+        plan.description = new_description
+        plan.save()
+        messages.info(request, "Plane Descriptions Updated Successfully", 'alert-success')
+    return redirect('home')
+
+
+@login_required
+def delete_plan(request, id):
+    user = request.user
+    plan = Plan.objects.get(id=id, user=user)
+    if request.method == "POST":
+        plan.delete()
+        messages.info(request, "Plane Deleted", 'alert-info')
+    return redirect('home')
