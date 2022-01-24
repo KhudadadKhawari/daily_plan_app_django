@@ -25,7 +25,7 @@ urlpatterns = [
     path('accounts/logout/', views.user_logout, name='user_logout' ),
     path('profile/', views.user_profile, name='user_profile' ),
     path('archive/', views.archive, name='archive' ),
-    path('plan/<str:id>/complete', views.complete_plan, name='complete_plan' ),
-    path('plan/<str:id>/update', views.update_plan, name='update_plan' ),
-    path('plan/<str:id>/delete', views.delete_plan, name='delete_plan' ),
+    path('plan/<str:id>/complete/', views.complete_plan, name='complete_plan' ),
+    path('plan/<str:id>/update/', views.update_plan, name='update_plan' ),
+    path('plan/<str:id>/delete/', views.delete_plan, name='delete_plan' ),
 ]

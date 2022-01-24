@@ -50,7 +50,7 @@
                                     Are You sure You want to Delete this plan?
                                 </div>
                                 <div class="modal-footer">
-                                    <form action="{% url 'delete_plan' plan.id %}" method="POST">
+                                    <form action="{% url 'delete_plan' plan.id %}?redirect_view=home" method="POST">
                                         {% csrf_token %}
                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                                         <input class="btn btn-danger" type="submit" name="Confirm" value="Delete">
@@ -110,7 +110,7 @@
                     </li>
                     <br>
                     {% endfor %}
-                  </ul>
+                </ul>
             </div>
         </div>
       </div>

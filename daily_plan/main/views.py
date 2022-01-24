@@ -3,12 +3,13 @@ from django.db import IntegrityError
 from django.shortcuts import render, redirect
 from .models import Plan
 from django.contrib.auth.models import User
-from .forms import  PlanForm, UserCreateForm
+from .forms import  PlanForm, UserCreateForm, UserProfileForm
 from django.contrib import messages
 from django.contrib.auth import logout, login, authenticate
 from django.contrib.auth.decorators import login_required
 from .decorators import unauthenticated_user
 from datetime import date
+from django.db.models import Q
 # Create your views here.
 
 @login_required
@@ -72,16 +73,32 @@ def user_logout(request):
 
 @login_required
 def user_profile(request):
+    user = request.user
+    form = UserProfileForm(instance=user)
+    if request.method == 'POST':
+        form = UserProfileForm(request.POST, request.FILES, instance=user)
+        if form.is_valid():
+            the_user = form.save(commit=False)
+            the_user.username = form.cleaned_data.get('username').lower()
+            the_user.save()
+            messages.success(request, "Profile Details Updated Successfully", "alert-success")
+            return redirect('user_profile')
     context={
         'active_nav': 'profile',
+        'form':form,
     }
     return render(request, 'main/user_profile.html', context)
 
 
 @login_required
 def archive(request):
+    user = request.user
+    today = date.today()
+    plans = Plan.objects.filter( user=user)
+    # ~Q(date_created=today)
     context={
         'active_nav': 'archive',
+        'plans': plans,
     }
     return render(request, 'main/archive.html', context)
 
@@ -124,7 +141,8 @@ def update_plan(request, id):
 def delete_plan(request, id):
     user = request.user
     plan = Plan.objects.get(id=id, user=user)
+    redirect_view = request.GET.get('redirect_view','home')
     if request.method == "POST":
         plan.delete()
         messages.info(request, "Plan Deleted", 'alert-info')
-    return redirect('home')
+    return redirect(redirect_view)

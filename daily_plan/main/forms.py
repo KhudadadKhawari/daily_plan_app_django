@@ -35,3 +35,16 @@ class UserCreateForm(UserCreationForm):
        if User.objects.filter(email=email).exists():
             raise ValidationError("Email exists")
        return self.cleaned_data
+
+
+class UserProfileForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['username','first_name', 'last_name','email']
+        widgets ={
+            'username': forms.TextInput(attrs={'class':'form-control ', 'id':'username', 'placeholder':'Username',}),
+            'first_name': forms.TextInput(attrs={'class':'form-control ', 'id':'first_name', 'placeholder':'First Name',}),
+            'last_name': forms.TextInput(attrs={'class':'form-control ', 'id':'last_name', 'placeholder':'Last Name',}),
+            'email': forms.EmailInput(attrs={'class':'form-control ', 'id':'email', 'placeholder':'Email','readonly':'true'}),
+        }
+
