@@ -6,50 +6,32 @@
 
 {% endblock head %}
 
-<!-- #############333 -->
+<!-- #############-->
 {% block content %}
 <div class="container">
     <div class="card mt-3">
         <div class="card-header">
-          Planes Archive
+          Notes Archive
         </div>
         <div class="card-body">
-            <!-- Planes Archive -->
+            <!-- Notees Archive -->
             <div>
-                <!-- planes  -->
+                <!-- notees  -->
                 <ul class="list-group">
-                    {% for plan in plans %}
+                    {% for note in notes %}
                     <li class="list-group-item ">
                         <span>
-                            {{plan.date_created}}
+                            {{ note.date_created }}
                         </span>
                         <span>
-                            {{plan.description}}
+                            {{note.category}}
                         </span>
-                        <button type="button" class="btn float-right" data-toggle="modal" data-target="#delete-{{plan.id}}" ><i class="fas fa-trash-alt"></i></button>
-                        <!-- delete model -->
-                        <div class="modal fade" id="delete-{{plan.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">Delete Plan</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    Are You sure You want to Delete this plan?
-                                </div>
-                                <div class="modal-footer">
-                                    <form action="{% url 'delete_plan' plan.id %}?redirect_view=archive" method="POST">
-                                        {% csrf_token %}
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                                        <input class="btn btn-danger" type="submit" name="Confirm" value="Delete">
-                                    </form>
-                                </div>
-                                </div>
-                            </div>
-                        </div>
+                        <span>
+                            {{note.title}}
+                        </span>
+                        <span>
+                            {{note.description}}
+                        </span>
                     </li>
                     <br>
                     {% endfor %}

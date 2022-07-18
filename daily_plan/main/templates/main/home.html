@@ -11,46 +11,62 @@
 <div class="container">
     <div class="card mt-3">
         <div class="card-header">
-          Today's Plans
+          Today's Notes
         </div>
         <div class="card-body">
             <div>
                 <form method="POST">
                     {% csrf_token %}
                     <div class="input-group">
-                        <input type="text" name="new_plan" class="form-control" placeholder="New Plan..." aria-describedby="basic-addon2">
-                        <input type="submit" name="submit" class="btn btn-primary" value="Add Plan">
+                        <!-- category select -->
+                        <select class="custom-select" id="category" name="category">
+                            <option selected>Choose...</option>
+                            <option value="personal_note">Personal Note</option>
+                            <option value="educational_note">Educational Note</option>
+                            <option value="business_note">Business Note</option>
+                        </select>
+                        <input type="text" class="form-control" name="title" placeholder="Title" required>
+                        <input type="text" name="description" class="form-control" placeholder="New Note..." aria-describedby="basic-addon2">
+                        <input type="submit" name="submit" class="btn btn-primary" value="Add Note">
                     </div>
                 </form>
             </div>
             <hr>
-            <!-- Today's Plans -->
+            <!-- Today's Notes -->
             <div>
                 <ul class="list-group">
-                    {% for plan in today_plans %}
+                    <!-- Bussiness Notes start -->
+                    <h1>Business Notes</h1>
+                    {% for note in business_notes %}
                     <li class="list-group-item ">
-                        <button type="button" class="btn " data-toggle="modal" data-target="#delete-{{plan.id}}" ><i class="fas fa-trash-alt"></i></button>
+                        
                         <span>
-                            {{plan.description}}
+                            {{note.category}}
                         </span>
-                        <button type="button" class="btn float-right" data-toggle="modal" data-target="#complete-{{plan.id}}" > {% if plan.status == 1 %}<i class="fas fa-check-circle"></i>{%else%} <i class="far fa-check-circle"></i>{% endif %} </button>
-                        <button type="button" class="btn float-right" data-toggle="modal" data-target="#edit-{{plan.id}}" ><i class="fas fa-edit"></i></i></button>
+                        <span>
+                            {{note.title}}
+                        </span>
+                        <span>
+                            {{note.description}}
+                        </span>
+                        <button type="button" class="btn float-right" data-toggle="modal" data-target="#delete-business-{{note.id}}" ><i class="fas fa-trash-alt"></i></button>
+                        <button type="button" class="btn float-right" data-toggle="modal" data-target="#edit-business-{{note.id}}" ><i class="fas fa-edit"></i></i></button>
 
                         <!-- delete model -->
-                        <div class="modal fade" id="delete-{{plan.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal fade" id="delete-business-{{note.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog" role="document">
                                 <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">Delete Plan</h5>
+                                    <h5 class="modal-title" id="exampleModalLabel">Delete Note</h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
                                 <div class="modal-body">
-                                    Are You sure You want to Delete this plan?
+                                    Are You sure You want to Delete this note?
                                 </div>
                                 <div class="modal-footer">
-                                    <form action="{% url 'delete_plan' plan.id %}?redirect_view=home" method="POST">
+                                    <form action="{% url 'delete_note' category='business_note' id=note.id %}?redirect_view=home" method="POST">
                                         {% csrf_token %}
                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                                         <input class="btn btn-danger" type="submit" name="Confirm" value="Delete">
@@ -60,56 +76,171 @@
                             </div>
                         </div>
                         <!-- edit Modal -->
-                        <div class="modal fade" id="edit-{{plan.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal fade" id="edit-business-{{note.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog" role="document">
                                 <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">Edit Plan</h5>
+                                    <h5 class="modal-title" id="exampleModalLabel">Edit Note</h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
-                                <form action="{% url 'update_plan' plan.id %}" method="POST">
+                                <form action="{% url 'update_note' category='business_note' id=note.id %}" method="POST">
                                     {% csrf_token %}
                                     <div class="modal-body">
-                                        <input class="form-control input-lg" type="text" name='update_plan' value="{{plan.description}}">
+                                        <input class="form-control input-lg" type="text" name='title' value="{{note.title}}">
+                                        <input class="form-control input-lg" type="text" name='description' value="{{note.description}}">
                                     </div>
                                     <div class="modal-footer">
-                                            
-                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                                            <input class="btn btn-primary" type="submit" name="Confirm" value="Update">
-                                        
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                        <input class="btn btn-primary" type="submit" name="Confirm" value="Update">
                                     </div>
                                 </form>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Comlplete Plan model -->
-                        <div class="modal fade" id="complete-{{plan.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">Complete Plan</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    Are you Sure you want to Mark this Column as Comlpleted?
-                                </div>
-                                <div class="modal-footer">
-                                    <form action="{% url 'complete_plan' plan.id %}" method="POST">
-                                        {% csrf_token %}
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                                        <input class="btn btn-success" type="submit" name="Confirm" value="Yes">
-                                    </form>
-                                </div>
                                 </div>
                             </div>
                         </div>
                     </li>
                     <br>
                     {% endfor %}
+                    <!-- Business Noted End -->
+                    <!-- Personal Notes start -->
+                    <h1>Personal Notes</h1>
+                    {% for note in personal_notes %}
+                    <li class="list-group-item ">
+
+                        
+                        <span>
+                            {{note.category}}
+                        </span>
+                        <span>
+                            {{note.title}}
+                        </span>
+                        <span>
+                            {{note.description}}
+                        </span>
+                        <button type="button" class="btn float-right" data-toggle="modal" data-target="#delete-personal-{{note.id}}" ><i class="fas fa-trash-alt"></i></button>
+                        <button type="button" class="btn float-right" data-toggle="modal" data-target="#edit-personal-{{note.id}}" ><i class="fas fa-edit"></i></i></button>
+
+                        <!-- delete model -->
+                        <div class="modal fade" id="delete-personal-{{note.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Delete Note</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    Are You sure You want to Delete this note?
+                                </div>
+                                <div class="modal-footer">
+                                    <form action="{% url 'delete_note' category='personal_note' id=note.id %}?redirect_view=home" method="POST">
+                                        {% csrf_token %}
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                        <input class="btn btn-danger" type="submit" name="Confirm" value="Delete">
+                                    </form>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- edit Modal -->
+                        <div class="modal fade" id="edit-personal-{{note.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Edit Note</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <form action="{% url 'update_note' category='personal_note' id=note.id %}" method="POST">
+                                    {% csrf_token %}
+                                    <div class="modal-body">
+                                        <input class="form-control input-lg" type="text" name='title' value="{{note.title}}">
+                                        <input class="form-control input-lg" type="text" name='description' value="{{note.description}}">
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                        <input class="btn btn-primary" type="submit" name="Confirm" value="Update">
+                                    </div>
+                                </form>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <br>
+                    {% endfor %}
+                    <!-- Personal Notes End -->
+                    <!-- EducationalNotes Start -->
+                    <h1>Educational Notes</h1>
+                    {% for note in educational_notes %}
+                    <li class="list-group-item ">
+                        
+                        <span>
+                            {{note.category}}
+                        </span>
+                        <span>
+                            {{note.title}}
+                        </span>
+                        <span>
+                            {{note.description}}
+                        </span>
+                        <button type="button" class="btn float-right" data-toggle="modal" data-target="#delete-educational-{{note.id}}" ><i class="fas fa-trash-alt"></i></button>
+                        <button type="button" class="btn float-right" data-toggle="modal" data-target="#edit-educational-{{note.id}}" ><i class="fas fa-edit"></i></i></button>
+
+                        <!-- delete model -->
+                        <div class="modal fade" id="delete-educational-{{note.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Delete Note</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    Are You sure You want to Delete this note?
+                                </div>
+                                <div class="modal-footer">
+                                    <form action="{% url 'delete_note' category='educational_note' id=note.id %}?redirect_view=home" method="POST">
+                                        {% csrf_token %}
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                        <input class="btn btn-danger" type="submit" name="Confirm" value="Delete">
+                                    </form>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- edit Modal -->
+                        <div class="modal fade" id="edit-educational-{{note.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Edit Note</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <form action="{% url 'update_note' category='educational_note' id=note.id %}" method="POST">
+                                    {% csrf_token %}
+                                    <div class="modal-body">
+                                        <input class="form-control input-lg" type="text" name='title' value="{{note.title}}">
+                                        <input class="form-control input-lg" type="text" name='description' value="{{note.description}}">
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                        <input class="btn btn-primary" type="submit" name="Confirm" value="Update">
+                                    </div>
+                                </form>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <br>
+                    {% endfor %}
+                    <!-- EducationalNotes End -->
+
                 </ul>
             </div>
         </div>
